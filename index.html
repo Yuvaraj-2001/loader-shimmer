@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            width: 100%;
+            height: 20px;
+            overflow: hidden;
+            position: relative;
+            transition: width 1s;
+        }
+
+        .tab-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab-text {
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .active {
+            background-color: #f0f0f0;
+        }
+
+        .tab-hidden {
+            width: 0;
+            visibility: hidden;
+            overflow: hidden;
+        }
+
+        .shimmer-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 800px 100%;
+            animation: shimmer 1s infinite linear;
+        }
+
+        @keyframes shimmer {
+            100% {
+                background-position: 800px 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="tabs-container">
+        <div class="tab active">
+            <div class="tab-content">
+                <div class="tab-text">Tab 1</div>
+            </div>
+        </div>
+        <div class="tab">
+            <div class="tab-content">
+                <div class="tab-text">Tab 2</div>
+            </div>
+        </div>
+        <div class="tab">
+            <div class="tab-content">
+                <div class="tab-text">Tab 3</div>
+            </div>
+        </div>
+        <div class="tab">
+            <div class="tab-content">
+                <div class="tab-text">Tab 4</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                const tabsContainer = document.querySelector('.tabs-container');
+                const thirdTab = tabsContainer.children[2]; // Get reference to the third tab
+                const fifthTab = document.createElement('div');
+                fifthTab.classList.add('tab', 'tab-hidden'); // Add 'tab-hidden' class
+                const tabContent = document.createElement('div');
+                tabContent.classList.add('tab-content');
+                const tabText = document.createElement('div');
+                tabText.classList.add('tab-text');
+                tabText.textContent = 'Tab 5';
+                tabContent.appendChild(tabText);
+                fifthTab.appendChild(tabContent);
+                tabsContainer.insertBefore(fifthTab, thirdTab.nextSibling);
+                setTimeout(function() {
+                    fifthTab.classList.remove('tab-hidden'); // Remove 'tab-hidden' class
+                    fifthTab.style.width = "100%"; // Set width to 100%
+                    fifthTab.style.visibility = "visible"; // Show tab after transition
+                    tabText.style.width = "100%"; // Set width of text to 100%
+                    const shimmerEffect = document.createElement('div');
+                    shimmerEffect.classList.add('shimmer-effect'); // Add 'shimmer-effect' class
+
+                    const allTab = document.querySelectorAll('.tab');
+                    debugger
+                    allTab.forEach((e, index) => {
+                    //    e.appendChild(shimmerEffect);
+                    e.appendChild(shimmerEffect.cloneNode(true)); 
+                    });
+                    // fifthTab.appendChild(shimmerEffect); // Add shimmer effect behind content
+                    setTimeout(function() {
+                        allTab.forEach((e, index) => {
+                            // e.removeChild(shimmerEffect);
+                            e.removeChild(e.lastChild);
+                        });
+                        // fifthTab.removeChild(shimmerEffect); // Remove shimmer effect after transition
+                    }, 5000); // Adjust duration of transition
+                }, 10); // Wait for a short time before removing class to trigger transition
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
